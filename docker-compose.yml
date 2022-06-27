@@ -1,7 +1,7 @@
 version: '3'
 
 networks:
-    nginx-php74-mysql8-node:
+    mingenet:
 
 services:
 
@@ -10,15 +10,16 @@ services:
         image: nginx:stable-alpine
         container_name: nginx-container
         ports:
-            - "8080:80"
+            - "82:80"
         volumes:
             - ./app:/var/www/project
             - ./nginx/default.conf:/etc/nginx/conf.d/default.conf
         depends_on:
             - php74-service
             - mysql8-service
+            - redis72-service
         networks:
-            - nginx-php74-mysql8-node
+            - mingenet
 
     # php
     php74-service:
@@ -26,35 +27,44 @@ services:
             context: .
             dockerfile: ./php/Dockerfile
         container_name: php74-container
-        ports:
-            - "9000:9000"
+        #ports:
+            #- "9000:9000"
         volumes:
             - ./app:/var/www/project
         networks:
-            - nginx-php74-mysql8-node
+            - mingenet
 
     # mysql
     mysql8-service:
         image: mysql:8
         container_name: mysql8-container
         ports:
-            - "4306:3306"
+            - "3307:3306"
         volumes:
             - ./mysql:/var/lib/mysql
         command: --default-authentication-plugin=mysql_native_password --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
-        restart: always # always restart unless stopped manually
+        restart: always
         environment:
-            MYSQL_ROOT_PASSWORD: secret
-            MYSQL_PASSWORD: secret
+            MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASSWORD}
+            MYSQL_PASSWORD: ${DB_PASSWORD}
         networks:
-            - nginx-php74-mysql8-node
+            - mingenet
 
-    # node
-    node-service:
-        image: node:latest
-        container_name: node-container
-        volumes:
-            - ./app:/var/www/project
-        working_dir: /var/www/project
+    # redis
+    redis72-service:
+        image: redis:7.2-alpine
+        container_name: redis72-container
+        restart: always
+        ports:
+            - '6379:6379'
+        command: redis-server --save 20 1 --loglevel warning --requirepass ${DB_PASSWORD}
+        volumes: 
+            - cache:/data
         networks:
-            - nginx-php74-mysql8-node
+            - mingenet
+
+#volumes:
+#    mysql8-service:
+#        driver: local
+#    redis72-service:
+#        driver: local
