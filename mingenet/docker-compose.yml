@@ -17,7 +17,7 @@ services:
         depends_on:
             - php74-service
             - mysql8-service
-            - redis72-service
+            - redis702-service
         networks:
             - mingenet
 
@@ -51,8 +51,8 @@ services:
             - mingenet
 
     # redis
-    redis72-service:
-        image: redis:7.2-alpine
+    redis702-service:
+        image: redis:7.0.2-alpine
         container_name: redis72-container
         restart: always
         ports:
