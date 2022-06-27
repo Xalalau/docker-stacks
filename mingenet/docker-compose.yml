@@ -64,5 +64,5 @@ services:
             - mingenet
 
 volumes:
-    redis72-service:
+    cache:
         driver: local
