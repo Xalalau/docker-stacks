@@ -1,8 +1,9 @@
 FROM php:7.4-fpm
 
 RUN apt-get update && apt-get install -y zlib1g-dev g++ git libicu-dev zip libzip-dev zip \
-    && docker-php-ext-install intl opcache pdo pdo_mysql \
+    && docker-php-ext-install intl opcache pdo pdo_mysql mysqli \
     && pecl install apcu \
+    && docker-php-ext-enable mysqli \
     && docker-php-ext-enable apcu \
     && docker-php-ext-configure zip \
     && docker-php-ext-install zip
