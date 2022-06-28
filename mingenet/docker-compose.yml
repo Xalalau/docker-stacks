@@ -1,48 +1,48 @@
 version: '3'
 
 networks:
-    mingenet:
+    mingenet-dev:
 
 services:
 
     # nginx
-    nginx122-service:
+    nginx122-service-dev:
         image: nginx:1.22
-        container_name: nginx-container
+        container_name: nginx-container-dev
         restart: always
         ports:
-            - "82:80"
+            - "83:80"
         volumes:
             - ./www:/var/www
             - ./nginx:/etc/nginx/conf.d
             - ./nginx_log:/var/log/nginx
         depends_on:
-            - php74-service
-            - mysql8-service
-            - redis7-service
+            - php74-service-dev
+            - mysql8-service-dev
+            - redis7-service-dev
         networks:
-            - mingenet
+            - mingenet-dev
 
     # php
     php74-service:
         build:
             context: .
             dockerfile: ./php/Dockerfile
-        container_name: php74-container
+        container_name: php74-container-dev
         restart: always
         #ports:
             #- "9000:9000"
         volumes:
             - ./www:/var/www
         networks:
-            - mingenet
+            - mingenet-dev
 
     # mysql
-    mysql8-service:
+    mysql8-service-dev:
         image: mysql:8.0
-        container_name: mysql8-container
+        container_name: mysql8-container-dev
         ports:
-            - "3307:3306"
+            - "3308:3306"
         volumes:
             - ./mysql:/var/lib/mysql
         command: --default-authentication-plugin=mysql_native_password --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
@@ -51,18 +51,18 @@ services:
             MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASSWORD}
             MYSQL_PASSWORD: ${DB_PASSWORD}
         networks:
-            - mingenet
+            - mingenet-dev
 
     # redis
-    redis7-service:
+    redis7-service-dev:
         image: redis:7.0
-        container_name: redis7-container
+        container_name: redis7-container-dev
         restart: always
         ports:
-            - '6379:6379'
+            - '6380:6379'
         command: redis-server --save 20 1 --loglevel warning --requirepass ${DB_PASSWORD}
         volumes: 
             - ./redis:/data
         networks:
-            - mingenet
+            - mingenet-dev
 
