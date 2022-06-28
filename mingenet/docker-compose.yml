@@ -16,7 +16,6 @@ services:
             - ./www:/var/www
             #- ./nginx:/etc/nginx
             - ./nginx_log:/var/log/nginx
-        command: 
         depends_on:
             - php74-service
             - mysql8-service
