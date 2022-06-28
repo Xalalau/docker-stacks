@@ -15,6 +15,7 @@ services:
         volumes:
             - ./www:/usr/share/nginx/html
             - ./nginx:/etc/nginx
+            - ./nginx_log:/var/log/nginx
         depends_on:
             - php74-service
             - mysql8-service
@@ -32,7 +33,7 @@ services:
         #ports:
             #- "9000:9000"
         volumes:
-            - ./www:/var/www/project
+            - ./www:/var/www
         networks:
             - mingenet
 
