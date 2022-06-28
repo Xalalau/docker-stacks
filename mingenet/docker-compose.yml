@@ -7,7 +7,7 @@ services:
 
     # nginx
     nginx122-service:
-        image: nginx:latest
+        image: nginx:1.22
         container_name: nginx-container
         restart: always
         ports:
