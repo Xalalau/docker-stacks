@@ -14,7 +14,7 @@ services:
             - "82:80"
         volumes:
             - ./www:/var/www
-            #- ./nginx:/etc/nginx
+            - ./nginx:/etc/nginx/conf.d
             - ./nginx_log:/var/log/nginx
         depends_on:
             - php74-service
