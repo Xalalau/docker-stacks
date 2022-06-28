@@ -14,7 +14,7 @@ services:
         volumes:
             - ./app:/usr/share/nginx/html
             # - ./nginx/nginx.conf:/etc/nginx/conf.d/nginx.conf
-            - ./nginx:/etc/nginx/conf.d
+            - ./nginx:/etc/nginx
         depends_on:
             - php74-service
             - mysql8-service
