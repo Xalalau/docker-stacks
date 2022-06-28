@@ -13,7 +13,7 @@ services:
         ports:
             - "82:80"
         volumes:
-            - ./www:/usr/share/nginx/html
+            - ./www:/var/www
             - ./nginx:/etc/nginx
             - ./nginx_log:/var/log/nginx
         depends_on:
