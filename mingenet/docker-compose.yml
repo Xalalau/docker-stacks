@@ -67,4 +67,6 @@ services:
 
 volumes:
     mingenet:
-        driver: local
+        html:
+        nginx:
+        redis:
