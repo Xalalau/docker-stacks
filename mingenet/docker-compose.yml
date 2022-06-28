@@ -13,7 +13,7 @@ services:
             - "82:80"
         volumes:
             - ./app:/usr/share/nginx/html
-            - ./nginx/nginx.conf:/etc/nginx/conf.d/nginx.conf:ro
+            - ./nginx/nginx.conf:/etc/nginx/conf.d/nginx.conf
         depends_on:
             - php74-service
             - mysql8-service
