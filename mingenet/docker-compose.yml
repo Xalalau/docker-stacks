@@ -36,6 +36,8 @@ services:
             - ./www:/var/www
         networks:
             - mingenet-dev
+        environment: 
+            - PHP_FPM_CLEAR_ENV=no
 
     # mysql
     mysql8-service-dev:
