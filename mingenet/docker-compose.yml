@@ -7,13 +7,13 @@ services:
 
     # nginx
     nginx-service:
-        image: nginx:stable-alpine
+        image: nginx:stable
         container_name: nginx-container
         ports:
             - "82:80"
         volumes:
             - ./app:/usr/share/nginx/html
-            - ./nginx:/etc/nginx
+            - ./nginx/nginx.conf:/etc/nginx/conf.d/nginx.conf
         depends_on:
             - php74-service
             - mysql8-service
