@@ -37,7 +37,8 @@ services:
         networks:
             - mingenet
         environment: 
-            - PHP_FPM_CLEAR_ENV=no
+            MYSQL_USER: ${DB_USER}
+            MYSQL_PASSWORD: ${DB_PASSWORD}
 
     # mysql
     mysql8-service:
