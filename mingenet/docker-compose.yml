@@ -13,8 +13,8 @@ services:
         ports:
             - "82:80"
         volumes:
-            - mingenet/html:/usr/share/nginx/html
-            - mingenet/nginx:/etc/nginx
+            - ./app:/usr/share/nginx/html
+            - ./nginx:/etc/nginx
         depends_on:
             - php74-service
             - mysql8-service
@@ -32,7 +32,7 @@ services:
         #ports:
             #- "9000:9000"
         volumes:
-            - mingenet/html:/usr/share/nginx/html
+            - ./app:/var/www/project
         networks:
             - mingenet
 
@@ -43,7 +43,7 @@ services:
         ports:
             - "3307:3306"
         volumes:
-            - mingenet/mysql:/var/lib/mysql
+            - ./mysql:/var/lib/mysql
         command: --default-authentication-plugin=mysql_native_password --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
         restart: always
         environment:
@@ -61,11 +61,7 @@ services:
             - '6379:6379'
         command: redis-server --save 20 1 --loglevel warning --requirepass ${DB_PASSWORD}
         volumes: 
-            - mingenet/redis:/data
+            - ./redis:/data
         networks:
             - mingenet
 
-volumes:
-    mingenet:/html
-    mingenet:/nginx
-    mingenet:/redis
