@@ -32,7 +32,7 @@ services:
         #ports:
             #- "9000:9000"
         volumes:
-            - ./app:/var/www/project
+            - ./app:/usr/share/nginx/html
         networks:
             - mingenet
 
