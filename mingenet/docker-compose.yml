@@ -24,7 +24,7 @@ services:
             - mingenet-dev
 
     # php
-    php74-service:
+    php74-service-dev:
         build:
             context: .
             dockerfile: ./php/Dockerfile
