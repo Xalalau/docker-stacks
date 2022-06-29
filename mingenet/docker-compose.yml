@@ -1,4 +1,4 @@
-version: '3'
+version: '3.1'
 
 networks:
     mingenet:
@@ -6,9 +6,9 @@ networks:
 services:
 
     # nginx
-    nginx122-service:
+    minge-nginx:
         image: nginx:1.22
-        container_name: nginx-container
+        container_name: minge-nginx
         restart: always
         ports:
             - "82:80"
@@ -17,18 +17,18 @@ services:
             - ./nginx:/etc/nginx/conf.d
             - ./nginx_log:/var/log/nginx
         depends_on:
-            - php74-service
-            - mysql8-service
-            - redis7-service
+            - minge-php
+            - minge-mariadb
+            - minge-redis
         networks:
             - mingenet
 
     # php
-    php74-service:
+    minge-php:
         build:
             context: .
             dockerfile: ./php/Dockerfile
-        container_name: php74-container
+        container_name: minge-php
         restart: always
         #ports:
             #- "9000:9000"
@@ -37,29 +37,35 @@ services:
         networks:
             - mingenet
         environment: 
-            MYSQL_USER: ${DB_USER}
-            MYSQL_PASSWORD: ${DB_PASSWORD}
+            MYSQL_USER: '${DB_USER}'
+            MYSQL_PASSWORD: '${DB_PASSWORD}'
 
-    # mysql
-    mysql8-service:
-        image: mysql:8.0
-        container_name: mysql8-container
+    # mariadb
+    minge-mariadb:
+        image: mariadb:10.8
+        container_name: minge-mariadb
         ports:
             - "3307:3306"
         volumes:
             - ./mysql:/var/lib/mysql
-        command: --default-authentication-plugin=mysql_native_password --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
+            - ./mysql_cnf/my.cnf:/etc/mysql/conf.d/my.cnf
         restart: always
         environment:
-            MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASSWORD}
-            MYSQL_PASSWORD: ${DB_PASSWORD}
+            MYSQL_USER: '${DB_USER}'
+            MYSQL_ROOT_PASSWORD: '${DB_ROOT_PASSWORD}'
+            MYSQL_PASSWORD: '${DB_PASSWORD}'
+            MYSQL_DATABASE: '${DB_NAME}'
+        healthcheck:
+            test: mysqladmin ping -h 127.0.0.1 -u root --password=$$MYSQL_ROOT_PASSWORD
+            interval: 5s
+            retries: 5
         networks:
             - mingenet
 
     # redis
-    redis7-service:
+    minge-redis:
         image: redis:7.0
-        container_name: redis7-container
+        container_name: minge-redis
         restart: always
         ports:
             - '6379:6379'
