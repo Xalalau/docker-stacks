@@ -48,7 +48,7 @@ services:
             - "3307:3306"
         volumes:
             - ./mysql:/var/lib/mysql
-            - ./mysql_cnf/my.cnf:/etc/mysql/conf.d/my.cnf
+            #- ./mysql_cnf/my.cnf:/etc/mysql/conf.d/my.cnf
         restart: always
         environment:
             MYSQL_USER: ${DB_USER}
