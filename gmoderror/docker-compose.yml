@@ -1,0 +1,64 @@
+version: '3.1'
+
+networks:
+    gmoderror:
+
+services:
+
+    # nginx
+    gerror-nginx:
+        image: nginx:1.22
+        container_name: gerror-nginx
+        restart: always
+        ports:
+            - "83:80"
+        volumes:
+            - ./www:/var/www
+            - ./nginx:/etc/nginx/conf.d
+            - ./nginx_log:/var/log/nginx
+        depends_on:
+            - gerror-php
+            - gerror-mariadb
+            - gerror-redis
+        networks:
+            - gmoderror
+
+    # php
+    gerror-php:
+        build:
+            context: .
+            dockerfile: ./php/Dockerfile
+        container_name: gerror-php
+        restart: always
+        #ports:
+            #- "9000:9000"
+        volumes:
+            - ./www:/var/www
+        networks:
+            - gmoderror
+        environment: 
+            MYSQL_USER: ${DB_USER}
+            MYSQL_PASSWORD: ${DB_PASSWORD}
+
+    # mariadb
+    gerror-mariadb:
+        image: mariadb:10.8
+        container_name: gerror-mariadb
+        ports:
+            - "3308:3306"
+        volumes:
+            - ./mysql:/var/lib/mysql
+            #- ./mysql_cnf/my.cnf:/etc/mysql/conf.d/my.cnf
+        restart: always
+        environment:
+            MYSQL_USER: ${DB_USER}
+            MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASSWORD}
+            MYSQL_PASSWORD: ${DB_PASSWORD}
+            MYSQL_DATABASE: ${DB_NAME}
+        healthcheck:
+            test: mysqladmin ping -h 127.0.0.1 -u root --password=$$MYSQL_ROOT_PASSWORD
+            interval: 5s
+            retries: 5
+        networks:
+            - gmoderror
+
