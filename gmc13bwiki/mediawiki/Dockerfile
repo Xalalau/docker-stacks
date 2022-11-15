@@ -81,8 +81,6 @@ RUN mkdir -p $MEDIAWIKI_STORAGE_PATH/extensions/TemplateWizard && \
         --depth 1 \
         https://gerrit.wikimedia.org/r/mediawiki/extensions/TemplateWizard \
         $MEDIAWIKI_STORAGE_PATH/extensions/TemplateWizard && \
-        cd $MEDIAWIKI_STORAGE_PATH/extensions/TemplateWizard && \
-        composer install --no-dev && \
     rm -rf $MEDIAWIKI_STORAGE_PATH/extensions/TemplateWizard/.git*
 
 # download TimedMediaHandler extension
@@ -93,6 +91,8 @@ RUN mkdir -p $MEDIAWIKI_STORAGE_PATH/extensions/TimedMediaHandler && \
         --depth 1 \
         https://gerrit.wikimedia.org/r/mediawiki/extensions/TimedMediaHandler \
         $MEDIAWIKI_STORAGE_PATH/extensions/TimedMediaHandler && \
+        cd $MEDIAWIKI_STORAGE_PATH/extensions/TimedMediaHandler && \
+        composer install --no-dev && \
     rm -rf $MEDIAWIKI_STORAGE_PATH/extensions/TimedMediaHandler/.git*
 
 # download YouTube extension
