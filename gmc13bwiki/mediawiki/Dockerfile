@@ -11,6 +11,7 @@ RUN set -eux; \
 	apt-get install -y --no-install-recommends \
 		lua5.4 \
 		ffmpeg \
+        nano \
 	; \
 	rm -rf /var/lib/apt/lists/*
 
