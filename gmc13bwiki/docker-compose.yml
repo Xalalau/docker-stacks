@@ -46,6 +46,8 @@ services:
             - db:/var/lib/mysql
         networks:
             - gmc13bwiki
+        # Force the containter to accept an unprotected root
+        # entrypoint: mysqld_safe --skip-grant-tables --user=mysql
 
 
     # By radiorabe
