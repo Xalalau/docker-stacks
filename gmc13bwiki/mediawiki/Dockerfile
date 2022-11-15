@@ -26,6 +26,9 @@ RUN set -eux; \
 # copy configs
 COPY ./mediawiki/LocalSettings.php $MEDIAWIKI_STORAGE_PATH/LocalSettings.php
 
+# copy icon
+COPY ./mediawiki/favicon.ico $MEDIAWIKI_STORAGE_PATH
+
 # config the database
 ARG MYSQL_HOST
 ARG MYSQL_DATABASE
