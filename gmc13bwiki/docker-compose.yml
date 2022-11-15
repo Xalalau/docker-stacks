@@ -1,0 +1,75 @@
+# MediaWiki with MariaDB
+
+version: '3'
+
+networks:
+    gmc13bwiki:
+
+services:
+    mediawiki:
+        build:
+            context: .
+            dockerfile: ./mediawiki/Dockerfile
+            args:
+                MYSQL_HOST: ${MYSQL_HOST}
+                MYSQL_DATABASE: ${MYSQL_DATABASE}
+                MYSQL_USER: ${MYSQL_USER}
+                MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+        container_name: gmc13bw-media
+        restart: always
+        ports:
+            - 8080:80
+        links:
+            - database
+        volumes:
+            - images:/var/www/html/images
+            # - ./LocalSettings.php:/var/www/html/LocalSettings.php
+        depends_on:
+            - gmc13bw-php
+        networks:
+            - gmc13bwiki
+
+
+    database:
+        image: mariadb
+        container_name: gmc13bw-maria
+        restart: always
+        ports:
+            - 3306:3306
+        environment:
+            # @see https://phabricator.wikimedia.org/source/mediawiki/browse/master/includes/DefaultSettings.php
+            MYSQL_DATABASE: ${MYSQL_DATABASE}
+            MYSQL_USER: ${MYSQL_USER}
+            MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+            MYSQL_RANDOM_ROOT_PASSWORD: 'yes'
+        volumes:
+            - db:/var/lib/mysql
+        networks:
+            - gmc13bwiki
+
+
+    # By radiorabe
+    backup:
+        image: schnitzler/mysqldump
+        container_name: gmc13bw-backup
+        volumes:
+            # backup script to use
+            - ./backup/backup.sh:/etc/periodic/daily/backup:ro
+            # volume for backing up files
+            - ./images:/images:ro
+            # mount backups
+            - ./backup/:/backup
+        command: ["-l", "8", "-d", "8"]
+        environment:
+            BACKUP_RETENTION: 14
+            MYSQL_HOST: ${MYSQL_HOST}
+            MYSQL_USER: ${MYSQL_USER}
+            MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+            MYSQL_DATABASE: ${MYSQL_DATABASE}
+        networks:
+           - gmc13bwiki
+
+
+volumes:
+    images:
+    db:
