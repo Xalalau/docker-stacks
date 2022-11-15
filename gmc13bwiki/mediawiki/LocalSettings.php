@@ -237,7 +237,6 @@ wfLoadExtension( 'Parsoid', 'vendor/wikimedia/parsoid/extension.json' ); #Old
 wfLoadExtension( 'TemplateStyles' );
 wfLoadExtension( 'TemplateWizard' );
 wfLoadExtension( 'YouTube' );
-wfLoadExtension( 'TimedMediaHandler' );
 
 wfLoadExtension( 'UserMerge' );
     $wgGroupPermissions['bureaucrat']['usermerge'] = true; // By default nobody can use this function, enable for bureaucrat?
@@ -265,3 +264,74 @@ wfLoadExtension( 'UploadWizard' );
         'maxUploads' => 15, // Number of uploads with one form - defaults to 50
         'fileExtensions' => $wgFileExtensions // omitting this may cause errors
     ];
+
+wfLoadExtension( 'TimedMediaHandler' );
+    $wgMaxShellMemory = 407200;
+
+    $wgFFmpegLocation = '/usr/bin/ffmpeg'; // Most common ffmpeg path on Linux
+
+    // The minimum size for an embed video player (smaller than this size uses a pop-up player).
+    $wgMinimumVideoPlayerSize = 200;
+
+    // If transcoding is enabled for this wiki (if disabled, no transcode jobs are added and no transcode status is displayed).
+    // Note if remote embedding an asset we will still check if the remote repo has transcoding enabled and associated flavors
+    // for that media embed.
+    $wgEnableTranscode = true;
+
+    // The total amout of time a transcoding shell command can take:
+    $wgTranscodeBackgroundTimeLimit = 3600 * 8;
+    // Maximum amount of virtual memory available to transcoding processes in KB
+    $wgTranscodeBackgroundMemoryLimit = 2 * 1024 * 1024; // 2GB avconv, ffmpeg2theora mmap resources so virtual memory needs to be high enough
+    // Maximum file size transcoding processes can create, in KB
+    $wgTranscodeBackgroundSizeLimit = 3 * 1024 * 1024; // 3GB
+
+    // Number of threads to use in avconv for transcoding
+    $wgFFmpegThreads = 1;
+
+    // The NS for TimedText (registered on MediaWiki.org)
+    // https://www.mediawiki.org/wiki/Extension_namespace_registration
+    // Note commons pre-dates TimedMediaHandler and should set $wgTimedTextNS = 102 in LocalSettings.php
+    $wgTimedTextNS = 710;
+
+    // Set TimedText namespace for ForeignDBViaLBRepo on a per wikiID basis
+    // $wgTimedTextForeignNamespaces = array( 'commonswiki' => 102 );
+    $wgTimedTextForeignNamespaces = array();
+
+    /**
+    * Default enabled transcodes
+    *
+    * -If set to empty array, no derivatives will be created
+    * -Derivative keys encode settings are defined in WebVideoTranscode.php
+    *
+    * -These transcodes are *in addition to* the source file.
+    * -Only derivatives with smaller width than the source asset size will be created
+    * -Regardless of source size at least one WebM and Ogg source will be created from the $wgEnabledTranscodeSet
+    * -Derivative jobs are added to the MediaWiki JobQueue the first time the asset is uploaded
+    * -Derivative should be listed min to max
+    */
+    // Starting from 1.31
+    // All valid string values are listed in the extension's extension.json file 
+    $wgEnabledTranscodeSet = [
+        '160p.webm' => true,
+        '240p.webm' => true,
+        '360p.webm' => true,
+        '480p.webm' => true,
+        '720p.webm' => true,
+        '1080p.webm' => true,
+    ];
+
+    $wgEnabledAudioTranscodeSet = [
+        'ogg' => true,   // ogg+vorbis
+        'opus' => false, // ogg+opus
+        'mp3' => true,   // raw mp3
+        'm4a' => false,  // mp4+aac (mp4a.40.5)
+    ];
+
+    // If mp3 source assets can be ingested:
+    $wgTmhEnableMp3Uploads = true;
+
+    // If mp4 source assets can be ingested:
+    $wgTmhEnableMp4Uploads = false;
+
+    // If you use ffmpeg 2 can be set it to true
+    $wgUseFFmpeg2 = false;
