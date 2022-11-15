@@ -37,6 +37,9 @@ RUN sed -i "s/MYSQL_HOST/$MYSQL_HOST/g" "$MEDIAWIKI_STORAGE_PATH/LocalSettings.p
     sed -i "s/MYSQL_PASSWORD/$MYSQL_PASSWORD/g" "$MEDIAWIKI_STORAGE_PATH/LocalSettings.php" && \
     sed -i "s/MYSQL_DATABASE/$MYSQL_DATABASE/g" "$MEDIAWIKI_STORAGE_PATH/LocalSettings.php"
 
+# Install Composer
+RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
+
 # download UploadWizard extension
 RUN mkdir -p $MEDIAWIKI_STORAGE_PATH/extensions/UploadWizard && \
     git clone \
@@ -75,6 +78,8 @@ RUN mkdir -p $MEDIAWIKI_STORAGE_PATH/extensions/TemplateWizard && \
         --depth 1 \
         https://gerrit.wikimedia.org/r/mediawiki/extensions/TemplateWizard \
         $MEDIAWIKI_STORAGE_PATH/extensions/TemplateWizard && \
+        cd $MEDIAWIKI_STORAGE_PATH/extensions/TemplateWizard && \
+        composer install --no-dev && \
     rm -rf $MEDIAWIKI_STORAGE_PATH/extensions/TemplateWizard/.git*
 
 # download TimedMediaHandler extension
