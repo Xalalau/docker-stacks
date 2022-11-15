@@ -1,2 +1,3 @@
-    FROM nginx:1.22   
-    COPY default.conf /etc/nginx/conf.d/default.conf 
+FROM nginx:1.22
+
+COPY ./nginx/default.conf /etc/nginx/conf.d/default.conf 

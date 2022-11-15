@@ -7,7 +7,9 @@ services:
 
     # nginx
     minge-nginx:
-        image: nginx:1.22
+        build:
+            context: .
+            dockerfile: ./nginx/Dockerfile
         container_name: minge-nginx
         restart: always
         ports:
