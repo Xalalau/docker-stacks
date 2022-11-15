@@ -24,8 +24,6 @@ services:
         volumes:
             - images:/var/www/html/images
             # - ./LocalSettings.php:/var/www/html/LocalSettings.php
-        depends_on:
-            - gmc13bw-php
         networks:
             - gmc13bwiki
 
