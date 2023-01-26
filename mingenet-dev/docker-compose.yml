@@ -13,7 +13,7 @@ services:
         container_name: minge-dev-nginx
         restart: always
         ports:
-            - "82:80"
+            - "84:80"
         volumes:
             - ./www:/var/www
             - ./nginx:/etc/nginx/conf.d
@@ -47,7 +47,7 @@ services:
         image: mariadb:10.8
         container_name: minge-dev-mariadb
         ports:
-            - "3307:3306"
+            - "3309:3306"
         volumes:
             - ./mysql:/var/lib/mysql
             #- ./mysql_cnf/my.cnf:/etc/mysql/conf.d/my.cnf
@@ -70,7 +70,7 @@ services:
         container_name: minge-dev-redis
         restart: always
         ports:
-            - '6379:6379'
+            - '6380:6379'
         command: redis-server --save 20 1 --loglevel warning --requirepass ${DB_PASSWORD}
         volumes: 
             - ./redis:/data
