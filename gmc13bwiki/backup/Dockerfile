@@ -16,7 +16,7 @@ apk upgrade --available && sync
 # 0       5       1       *       *       run-parts /etc/periodic/monthly
 
 # Place script in appropriate folder
-COPY backup.sh /etc/periodic/daily/backup
+COPY ./backup/backup.sh /etc/periodic/daily/backup
 
 # Giving executable permission to script file
 RUN chmod +x /etc/periodic/daily/backup/backup.sh
