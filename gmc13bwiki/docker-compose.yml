@@ -50,7 +50,15 @@ services:
 
     # By radiorabe
     backup:
-        image: schnitzler/mysqldump
+        build:
+            context: .
+            dockerfile: ./backup/Dockerfile
+            args:
+                BACKUP_RETENTION: 14
+                MYSQL_HOST: ${MYSQL_HOST}
+                MYSQL_USER: ${MYSQL_USER}
+                MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+                MYSQL_DATABASE: ${MYSQL_DATABASE}
         container_name: gmc13bw-backup
         volumes:
             # backup script to use
@@ -59,13 +67,6 @@ services:
             - images:/images:ro
             # mount backups
             - ./backup/db:/backup
-        command: ["-l", "8", "-d", "8"]
-        environment:
-            BACKUP_RETENTION: 14
-            MYSQL_HOST: ${MYSQL_HOST}
-            MYSQL_USER: ${MYSQL_USER}
-            MYSQL_PASSWORD: ${MYSQL_PASSWORD}
-            MYSQL_DATABASE: ${MYSQL_DATABASE}
         networks:
            - gmc13bwiki
 
