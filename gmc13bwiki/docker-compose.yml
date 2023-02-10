@@ -26,7 +26,7 @@ services:
             # Reminder: after the container is generated, its LocalSettings.php will only be replaced by generating
             # the container again, so for post installation settings the LocalSettings.php must be positioned in the 
             # mount location, this line below must be uncommented and the container has to be mounted again.
-            - ./mediawiki/LocalSettings.php:/var/www/html/LocalSettings.php
+            #- ./mediawiki/LocalSettings.php:/var/www/html/LocalSettings.php
         networks:
             - gmc13bwiki
 
