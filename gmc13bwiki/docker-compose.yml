@@ -8,8 +8,8 @@ networks:
 services:
     mediawiki:
         build:
-            context: ./mediawiki
-            dockerfile: /Dockerfile
+            context: .
+            dockerfile: ./mediawiki/Dockerfile
             args:
                 MYSQL_HOST: ${MYSQL_HOST}
                 MYSQL_DATABASE: ${MYSQL_DATABASE}
@@ -24,6 +24,7 @@ services:
         volumes:
             - images:/var/www/html/images
             - ./mediawiki/LocalSettings.php:/var/www/html/LocalSettings.php
+            - ./mediawiki:
         networks:
             - gmc13bwiki
 
