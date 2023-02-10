@@ -1,6 +1,6 @@
 # MediaWiki with MariaDB and a backup
 
-version: '3'
+version: '3.2'
 
 networks:
     gmc13bwiki:
@@ -24,7 +24,7 @@ services:
         volumes:
             - images:/var/www/html/images
             - type: bind
-                source: /mediawiki/LocalSettings.php
+                source: ./mediawiki/LocalSettings.php
                 target: /var/www/html/LocalSettings.php
         networks:
             - gmc13bwiki
