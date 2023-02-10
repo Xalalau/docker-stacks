@@ -6,3 +6,5 @@ tar -zcf /backup/${now}_MYSQL_DATABASE.tar.gz /images
 
 # cleanup (keep last 14 backups...)
 ls -d -1t /backup/* | tail -n +`expr BACKUP_RETENTION + BACKUP_RETENTION + 1` | xargs rm -f
+
+# Thanks to radiorabe
