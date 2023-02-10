@@ -44,9 +44,6 @@ RUN sed -i "s/MYSQL_HOST/$MYSQL_HOST/g" "$MEDIAWIKI_STORAGE_PATH/LocalSettings.p
     sed -i "s/WIKI_SECRET_KEY/$WIKI_SECRET_KEY/g" "$MEDIAWIKI_STORAGE_PATH/LocalSettings.php" && \
     sed -i "s/WIKI_UPGRADE_KEY/$WIKI_UPGRADE_KEY/g" "$MEDIAWIKI_STORAGE_PATH/LocalSettings.php"
 
-# enable Apache url overriding
-RUN sed -i "s/AllowOverride None/AllowOverride All/g" "/etc/apache2/apache2.conf"
-
 # add the .htaccess with url overriding
 COPY ./mediawiki/.htaccess "$MEDIAWIKI_STORAGE_PATH"
 
