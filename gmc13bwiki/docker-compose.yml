@@ -1,4 +1,4 @@
-# MediaWiki with MariaDB
+# MediaWiki with MariaDB and a backup
 
 version: '3'
 
