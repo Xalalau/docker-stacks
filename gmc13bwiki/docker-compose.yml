@@ -61,12 +61,10 @@ services:
                 MYSQL_DATABASE: ${MYSQL_DATABASE}
         container_name: gmc13bw-backup
         volumes:
-            # backup script to use
-            - ./backup/backup.sh:/etc/periodic/daily/backup:ro
             # volume for backing up files
             - images:/images:ro
             # mount backups
-            - ./backup/db:/backup
+            - ./backup:/backup
         networks:
            - gmc13bwiki
 
