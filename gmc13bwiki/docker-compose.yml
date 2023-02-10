@@ -23,7 +23,7 @@ services:
             - database
         volumes:
             - images:/var/www/html/images
-            - ./LocalSettings.php:/var/www/html/LocalSettings.php
+            - ./mediawiki/LocalSettings.php:/var/www/html/LocalSettings.php
         networks:
             - gmc13bwiki
 
@@ -56,7 +56,7 @@ services:
             # backup script to use
             - ./backup/backup.sh:/etc/periodic/daily/backup:ro
             # volume for backing up files
-            - ./images:/images:ro
+            - ./images:images:ro
             # mount backups
             - ./backup/:/backup
         command: ["-l", "8", "-d", "8"]
