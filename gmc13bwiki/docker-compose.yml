@@ -23,7 +23,7 @@ services:
             - database
         volumes:
             - images:/var/www/html/images
-            - ./mediawiki/LocalSettings.php:/var/www/html/LocalSettings.php
+            #- ./mediawiki/LocalSettings.php:/var/www/html/LocalSettings.php
         networks:
             - gmc13bwiki
 
