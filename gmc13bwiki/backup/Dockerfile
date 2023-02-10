@@ -22,6 +22,12 @@ RUN apk add --no-cache mysql-client nano
 COPY ./backup/backup.sh /etc/periodic/daily/backup
 
 # Change env vars to their actual values
+ARG MYSQL_HOST
+ARG MYSQL_DATABASE
+ARG MYSQL_USER
+ARG MYSQL_PASSWORD
+ARG BACKUP_RETENTION
+
 RUN sed -i "s/MYSQL_HOST/$MYSQL_HOST/g" "/etc/periodic/daily/backup" && \
     sed -i "s/MYSQL_USER/$MYSQL_USER/g" "/etc/periodic/daily/backup"  && \
     sed -i "s/MYSQL_PASSWORD/$MYSQL_PASSWORD/g" "/etc/periodic/daily/backup" && \
