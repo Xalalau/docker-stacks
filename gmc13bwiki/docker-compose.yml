@@ -23,7 +23,9 @@ services:
             - database
         volumes:
             - images:/var/www/html/images
-            #- ./mediawiki/LocalSettings.php:/var/www/html/LocalSettings.php
+            - type: bind
+                source: /mediawiki/LocalSettings.php
+                target: /var/www/html/LocalSettings.php
         networks:
             - gmc13bwiki
 
