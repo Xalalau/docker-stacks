@@ -21,6 +21,13 @@ RUN apk add --no-cache mysql-client nano
 # Place script in appropriate folder
 COPY ./backup/backup.sh /etc/periodic/daily/backup
 
+# Change env vars to their actual values
+RUN sed -i "s/MYSQL_HOST/$MYSQL_HOST/g" "/etc/periodic/daily/backup" && \
+    sed -i "s/MYSQL_USER/$MYSQL_USER/g" "/etc/periodic/daily/backup"  && \
+    sed -i "s/MYSQL_PASSWORD/$MYSQL_PASSWORD/g" "/etc/periodic/daily/backup" && \
+    sed -i "s/MYSQL_DATABASE/$MYSQL_DATABASE/g" "/etc/periodic/daily/backup" && \
+    sed -i "s/BACKUP_RETENTION/$BACKUP_RETENTION/g" "/etc/periodic/daily/backup"
+
 # Giving executable permission to script file
 RUN chmod +x /etc/periodic/daily/backup
 
