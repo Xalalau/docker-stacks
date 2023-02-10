@@ -30,7 +30,7 @@ $wgMetaNamespace = "Gm_construct_13_beta";
 $wgScriptPath = "";
 
 ## The protocol and server name to use in fully-qualified URLs
-$wgServer = "https://gmc13bwiki.xalalau.com";
+$wgServer = "https://gm13.xalalau.com";
 
 ## The URL path to static resources (images, scripts, etc.)
 $wgResourceBasePath = $wgScriptPath;
