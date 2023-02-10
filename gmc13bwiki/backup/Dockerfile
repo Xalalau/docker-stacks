@@ -18,6 +18,9 @@ apk upgrade --available && sync
 # Place script in appropriate folder
 COPY ./backup/backup.sh /etc/periodic/daily/backup
 
+# Giving executable permission to script file
+RUN chmod +x /etc/periodic/daily/backup
+
 # bash-4.4# crond --help
 # BusyBox v1.28.4 (2018-05-30 10:45:57 UTC) multi-call binary.
 # Usage: crond -fbS -l N -d N -L LOGFILE -c DIR
