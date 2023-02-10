@@ -5,6 +5,9 @@ FROM alpine:latest
 RUN apk update && \
 apk upgrade --available && sync
 
+# Get mysqldump
+RUN apk add --no-cache mysql-client
+
 # https://gist.github.com/AntonFriberg/692eb1a95d61aa001dbb4ab5ce00d291
 
 # Alpine built in cron schedules
