@@ -51,7 +51,6 @@ services:
         # entrypoint: mysqld_safe --skip-grant-tables --user=mysql
 
 
-    # By radiorabe
     backup:
         build:
             context: .
@@ -64,9 +63,7 @@ services:
                 MYSQL_DATABASE: ${MYSQL_DATABASE}
         container_name: gmc13bw-backup
         volumes:
-            # volume for backing up files
             - images:/images:ro
-            # mount backups
             - ./backup:/backup
         networks:
            - gmc13bwiki
