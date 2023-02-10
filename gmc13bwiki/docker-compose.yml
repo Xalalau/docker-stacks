@@ -58,7 +58,7 @@ services:
             # volume for backing up files
             - images:/images:ro
             # mount backups
-            - ./backup/:/backup
+            - ./backup/db:/backup
         command: ["-l", "8", "-d", "8"]
         environment:
             BACKUP_RETENTION: 14
