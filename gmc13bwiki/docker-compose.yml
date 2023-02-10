@@ -24,7 +24,6 @@ services:
         volumes:
             - images:/var/www/html/images
             - ./mediawiki/LocalSettings.php:/var/www/html/LocalSettings.php
-            - ./mediawiki
         networks:
             - gmc13bwiki
 
