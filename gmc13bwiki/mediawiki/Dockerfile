@@ -48,7 +48,7 @@ RUN sed -i "s/MYSQL_HOST/$MYSQL_HOST/g" "$MEDIAWIKI_STORAGE_PATH/LocalSettings.p
 RUN sed -i "s/AllowOverride None/AllowOverride All/g" "/etc/apache2/apache2.conf"
 
 # add the .htaccess with url overriding
-COPY ./mediawiki/htaccess.ico "$MEDIAWIKI_STORAGE_PATH"
+COPY ./mediawiki/.htaccess "$MEDIAWIKI_STORAGE_PATH"
 
 # install Composer
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
