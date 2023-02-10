@@ -24,10 +24,10 @@ RUN set -eux; \
 	rm -rf /var/lib/apt/lists/*
 
 # copy configs
-COPY ./mediawiki/LocalSettings.php $MEDIAWIKI_STORAGE_PATH/LocalSettings.php
+COPY ./mediawiki/LocalSettings.php "$MEDIAWIKI_STORAGE_PATH"
 
 # copy icon
-COPY ./mediawiki/favicon.ico $MEDIAWIKI_STORAGE_PATH
+COPY ./mediawiki/favicon.ico "$MEDIAWIKI_STORAGE_PATH"
 
 # config the database
 ARG MYSQL_HOST
@@ -44,10 +44,13 @@ RUN sed -i "s/MYSQL_HOST/$MYSQL_HOST/g" "$MEDIAWIKI_STORAGE_PATH/LocalSettings.p
     sed -i "s/WIKI_SECRET_KEY/$WIKI_SECRET_KEY/g" "$MEDIAWIKI_STORAGE_PATH/LocalSettings.php" && \
     sed -i "s/WIKI_UPGRADE_KEY/$WIKI_UPGRADE_KEY/g" "$MEDIAWIKI_STORAGE_PATH/LocalSettings.php"
 
-# Enable Apache url overriding
+# enable Apache url overriding
 RUN sed -i "s/AllowOverride None/AllowOverride All/g" "/etc/apache2/apache2.conf"
 
-# Install Composer
+# add the .htaccess with url overriding
+COPY ./mediawiki/htaccess.ico "$MEDIAWIKI_STORAGE_PATH"
+
+# install Composer
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
 
 # download UploadWizard extension
