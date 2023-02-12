@@ -2,3 +2,16 @@
 
 RewriteEngine On
 RewriteRule ^/?wiki(/.*)?$ %{DOCUMENT_ROOT}/index.php [L]
+
+
+
+
+
+
+
+# !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+# NOTE: Add these lines to the Ngix proxy config to avoid the 502 error when calling load.php to get CSS files
+#     proxy_buffer_size 128k;
+#     proxy_buffers 4 256k;
+#     proxy_busy_buffers_size 256k;
+
