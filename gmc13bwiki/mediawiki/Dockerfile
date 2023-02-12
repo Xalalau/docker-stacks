@@ -24,7 +24,7 @@ RUN set -eux; \
 	rm -rf /var/lib/apt/lists/*
 
 # copy configs
-COPY ./mediawiki/LocalSettings.php "$MEDIAWIKI_STORAGE_PATH"
+#COPY ./mediawiki/LocalSettings.php "$MEDIAWIKI_STORAGE_PATH"
 
 # copy icon
 COPY ./mediawiki/favicon.ico "$MEDIAWIKI_STORAGE_PATH"
