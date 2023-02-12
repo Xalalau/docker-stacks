@@ -191,7 +191,7 @@ wfLoadExtension( 'WikiEditor' );
 $wgInternalServer = "http://127.0.0.1:8080";
 
 $wgGitBin = "/usr/bin/git";
-#$wgTmpDirectory = "$IP/images/temp";
+$wgTmpDirectory = "$IP/images/temp";
 
 #$wgCategoryTreeDynamicTag = true;
 $wgCategoryTreeDisableCache = true;
