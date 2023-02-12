@@ -1,5 +1,5 @@
 # Base on the mediawiki image
-FROM mediawiki:1.38.5
+FROM mediawiki:1.39
 
 # environment settings
 ENV MEDIAWIKI_VERSION_MAJOR=1
