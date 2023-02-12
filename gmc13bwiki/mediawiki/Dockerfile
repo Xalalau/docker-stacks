@@ -24,10 +24,10 @@ RUN set -eux; \
 	rm -rf /var/lib/apt/lists/*
 
 # copy configs
-#COPY ./mediawiki/LocalSettings.php "$MEDIAWIKI_STORAGE_PATH"
+COPY ./mediawiki/LocalSettings.php "$MEDIAWIKI_STORAGE_PATH"
 
 # copy icon
-#COPY ./mediawiki/favicon.ico "$MEDIAWIKI_STORAGE_PATH"
+COPY ./mediawiki/favicon.ico "$MEDIAWIKI_STORAGE_PATH"
 
 # config the database
 ARG MYSQL_HOST
@@ -37,15 +37,15 @@ ARG MYSQL_PASSWORD
 ARG WIKI_SECRET_KEY
 ARG WIKI_UPGRADE_KEY
 
-#RUN sed -i "s/MYSQL_HOST/$MYSQL_HOST/g" "$MEDIAWIKI_STORAGE_PATH/LocalSettings.php" && \
-#    sed -i "s/MYSQL_USER/$MYSQL_USER/g" "$MEDIAWIKI_STORAGE_PATH/LocalSettings.php"  && \
-#    sed -i "s/MYSQL_PASSWORD/$MYSQL_PASSWORD/g" "$MEDIAWIKI_STORAGE_PATH/LocalSettings.php" && \
-#    sed -i "s/MYSQL_DATABASE/$MYSQL_DATABASE/g" "$MEDIAWIKI_STORAGE_PATH/LocalSettings.php" && \
-#    sed -i "s/WIKI_SECRET_KEY/$WIKI_SECRET_KEY/g" "$MEDIAWIKI_STORAGE_PATH/LocalSettings.php" && \
-#    sed -i "s/WIKI_UPGRADE_KEY/$WIKI_UPGRADE_KEY/g" "$MEDIAWIKI_STORAGE_PATH/LocalSettings.php"
+RUN sed -i "s/MYSQL_HOST/$MYSQL_HOST/g" "$MEDIAWIKI_STORAGE_PATH/LocalSettings.php" && \
+    sed -i "s/MYSQL_USER/$MYSQL_USER/g" "$MEDIAWIKI_STORAGE_PATH/LocalSettings.php"  && \
+    sed -i "s/MYSQL_PASSWORD/$MYSQL_PASSWORD/g" "$MEDIAWIKI_STORAGE_PATH/LocalSettings.php" && \
+    sed -i "s/MYSQL_DATABASE/$MYSQL_DATABASE/g" "$MEDIAWIKI_STORAGE_PATH/LocalSettings.php" && \
+    sed -i "s/WIKI_SECRET_KEY/$WIKI_SECRET_KEY/g" "$MEDIAWIKI_STORAGE_PATH/LocalSettings.php" && \
+    sed -i "s/WIKI_UPGRADE_KEY/$WIKI_UPGRADE_KEY/g" "$MEDIAWIKI_STORAGE_PATH/LocalSettings.php"
 
 # add the .htaccess with url overriding
-#COPY ./mediawiki/.htaccess "$MEDIAWIKI_STORAGE_PATH"
+COPY ./mediawiki/.htaccess "$MEDIAWIKI_STORAGE_PATH"
 
 # install Composer
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
