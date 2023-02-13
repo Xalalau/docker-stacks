@@ -202,6 +202,9 @@ $wgFileExtensions = [
 ];
 
 # DEFAULT OPTIMIZATIONS
+    # Improve Vector 2010 mobile experience
+    $wgVectorResponsive = true;
+
     # Shared memory settings
     #$wgMainCacheType configured above
     #$wgMessageCacheType configured above
