@@ -23,6 +23,11 @@ RUN set -eux; \
 	; \
 	rm -rf /var/lib/apt/lists/*
 
+# HACK!! Fix MultimediaViewer webp preview (while it's not updated)
+# https://github.com/wikimedia/mediawiki-extensions-MultimediaViewer/commit/00ae50ea496438d7fe3b1ec8c68b1108100d07ed
+# Remove this command later!
+RUN sed -i "s/"tif": "default"/"tif": "default", "webp": "default",/g" "$MEDIAWIKI_STORAGE_PATH/extensions/MultimediaViewer/extension.json"
+
 # copy configs
 COPY ./mediawiki/LocalSettings.php "$MEDIAWIKI_STORAGE_PATH"
 
