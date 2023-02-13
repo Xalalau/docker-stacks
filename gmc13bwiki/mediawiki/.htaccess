@@ -1,12 +1,11 @@
 # Thanks to https://shorturls.redwerks.org/
-
+# /wiki/ address
 RewriteEngine On
 RewriteRule ^/?wiki(/.*)?$ %{DOCUMENT_ROOT}/index.php [L]
 
-
-
-
-
+# Block unsupported file extensions
+RewriteCond %{REQUEST_URI} ^/images/.*
+RewriteRule !\.(png|gif|jpg|jpeg|webp|ogg|ogv|oga|flac|opus|wav|webm|mp3|midi|mid|mpg|mpeg|mp4)$ - [F,NC]
 
 
 # !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
@@ -14,4 +13,3 @@ RewriteRule ^/?wiki(/.*)?$ %{DOCUMENT_ROOT}/index.php [L]
 #     proxy_buffer_size 128k;
 #     proxy_buffers 4 256k;
 #     proxy_busy_buffers_size 256k;
-
