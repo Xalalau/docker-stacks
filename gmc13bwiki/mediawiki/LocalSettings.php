@@ -198,7 +198,7 @@ $wgVisualEditorUseSingleEditTab = true;
 $wgFileExtensions = [
     'png', 'gif', 'jpg', 'jpeg', 'webp', 'ogg', 'ogv', 'oga',
     'flac', 'opus', 'wav', 'webm', 'mp3', 'midi', 'mid', 'mpg',
-    'mpeg', 'mp4'
+    'mpeg', 'mp4' # !!!! Update .htaccess as well after making changes
 ];
 
 # DEFAULT OPTIMIZATIONS
