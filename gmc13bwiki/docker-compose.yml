@@ -1,5 +1,13 @@
 # MediaWiki with MariaDB and a backup
 
+# Environment:
+#   MYSQL_HOST
+#   MYSQL_USER
+#   MYSQL_PASSWORD
+#   MYSQL_DATABASE
+#   WIKI_SECRET_KEY
+#   WIKI_UPGRADE_KEY
+
 version: '3.2'
 
 networks:
