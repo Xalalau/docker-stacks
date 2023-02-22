@@ -1,6 +1,6 @@
 FROM ubuntu:latest
 
-RUN apt install git sed cron \
+RUN apt install git sed cron && \
     sudo systemctl enable cron
 
 WORKDIR /cloudflare-ddns-updater
