@@ -9,7 +9,7 @@ ARG DEBIAN_FRONTEND=noninteractive
 
 RUN apt update && \
     apt upgrade -y && \
-    apt install git sed cron -y
+    apt install -y git sed cron
 
 ENV BASE_DIR /cloudflare-ddns-updater
 
