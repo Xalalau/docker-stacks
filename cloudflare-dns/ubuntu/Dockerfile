@@ -11,9 +11,11 @@ RUN apt update
 RUN apt upgrade -y
 RUN apt install git sed -y
 
-WORKDIR /cloudflare-ddns-updater
+ENV BASE_DIR /cloudflare-ddns-updater
 
-RUN git clone https://github.com/K0p1-Git/cloudflare-ddns-updater.git ./
+RUN git clone https://github.com/K0p1-Git/cloudflare-ddns-updater.git {$BASE_DIR}
+
+WORKDIR {$BASE_DIR}
 
 ARG EMAIL
 ARG AUTH_KEY
