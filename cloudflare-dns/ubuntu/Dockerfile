@@ -1,7 +1,8 @@
 FROM ubuntu:latest
 
 RUN apt update && apt upgrade && \
-    apt install git sed cron
+    apt install git sed cron && \
+    systemctl enable cron
 
 WORKDIR /cloudflare-ddns-updater
 
@@ -20,7 +21,7 @@ RUN sed -i "s/auth_email=\"\"/auth_email=\"$EMAIL\"/g" "$SCRIPT" && \
     sed -i "s/auth_key=\"\"/auth_key=\"$AUTH_KEY\"/g" "$SCRIPT" && \
     sed -i "s/zone_identifier=\"\"/zone_identifier=\"$ZONE_ID\"/g" "$SCRIPT" && \
     sed -i "s/record_name=\"\"/record_name=\"$RECORD_NAME\"/g" "$SCRIPT" && \
-    sed -i "s/sitename=\"\"/sitename=\"$SITENAME\"/g" "$SCRIPT" && \
+    sed -i "s/sitename=\"\"/sitename=\"$SITENAME\"/g" "$SCRIPT"
 
 RUN crontab -l > mycron && \
     echo "*/$INTERVAL_MIN * * * * /bin/bash /cloudflare-ddns-updater/cloudflare-template.sh" >> mycron && \
