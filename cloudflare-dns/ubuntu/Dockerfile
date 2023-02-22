@@ -7,9 +7,9 @@ LABEL description="Keep DNS A record updated"
 # Disable Prompt During Packages Installation
 ARG DEBIAN_FRONTEND=noninteractive
 
-RUN apt update
-RUN apt upgrade -y
-RUN apt install git sed cron -y
+RUN apt update && \
+    apt upgrade -y && \
+    apt install git sed cron -y
 
 ENV BASE_DIR /cloudflare-ddns-updater
 
@@ -36,10 +36,10 @@ RUN sed -i "s/auth_email=\"\"/auth_email=\"$EMAIL\"/g" "$SCRIPT" && \
 ENV CRON_FILE="/etc/cron.d/dns"
 ENV CRON_LOG="/var/log/cron.log"
 
-ADD crontab ${CRON_FILE}
-RUN chmod 0644 "$CRON_FILE"
-RUN echo "*/$INTERVAL_MIN * * * * /bin/bash /$BASE_DIR/$SCRIPT" >> "$CRON_FILE"
-RUN crontab "$CRON_FILE"
-RUN touch "$CRON_LOG"
+ADD crontab /etc/cron.d/dns
+
+RUN echo "*/$INTERVAL_MIN * * * * /bin/bash /$BASE_DIR/$SCRIPT" > "$CRON_FILE" && \
+    chmod 0644 "$CRON_FILE" && \
+    touch "$CRON_LOG"
 
 CMD cron && tail -f "$CRON_LOG"
