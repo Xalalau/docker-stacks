@@ -13,9 +13,9 @@ RUN apt install git sed cron -y
 
 ENV BASE_DIR /cloudflare-ddns-updater
 
-RUN git clone https://github.com/K0p1-Git/cloudflare-ddns-updater.git {$BASE_DIR}
+RUN git clone https://github.com/K0p1-Git/cloudflare-ddns-updater.git "$BASE_DIR"
 
-WORKDIR {$BASE_DIR}
+WORKDIR "$BASE_DIR"
 
 ARG EMAIL
 ARG AUTH_KEY
@@ -32,7 +32,14 @@ RUN sed -i "s/auth_email=\"\"/auth_email=\"$EMAIL\"/g" "$SCRIPT" && \
     sed -i "s/record_name=\"\"/record_name=\"$RECORD_NAME\"/g" "$SCRIPT" && \
     sed -i "s/sitename=\"\"/sitename=\"$SITENAME\"/g" "$SCRIPT"
 
-RUN crontab -l > mycron
-RUN echo "*/$INTERVAL_MIN * * * * /bin/bash /cloudflare-ddns-updater/cloudflare-template.sh" >> mycron
-RUN crontab mycron
-RUN rm mycron
+# crontab
+ENV CRON_FILE="/etc/cron.d/dns"
+ENV CRON_LOG="/var/log/cron.log"
+
+ADD crontab ${CRON_FILE}
+RUN chmod 0644 "$CRON_FILE"
+RUN echo "*/$INTERVAL_MIN * * * * /bin/bash /$BASE_DIR/$SCRIPT" >> "$CRON_FILE"
+RUN crontab "$CRON_FILE"
+RUN touch "$CRON_LOG"
+
+CMD cron && tail -f "$CRON_LOG"
