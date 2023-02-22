@@ -9,7 +9,7 @@ ARG DEBIAN_FRONTEND=noninteractive
 
 RUN apt update
 RUN apt upgrade -y
-RUN apt install git sed
+RUN apt install git sed -y
 
 WORKDIR /cloudflare-ddns-updater
 
