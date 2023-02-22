@@ -9,8 +9,7 @@ ARG DEBIAN_FRONTEND=noninteractive
 
 RUN apt update
 RUN apt upgrade -y
-RUN apt install git sed cron -y
-RUN systemctl enable cron
+RUN apt install git sed
 
 WORKDIR /cloudflare-ddns-updater
 
