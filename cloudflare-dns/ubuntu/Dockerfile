@@ -30,7 +30,7 @@ RUN sed -i "s/auth_email=\"\"/auth_email=\"$EMAIL\"/g" "$SCRIPT" && \
     sed -i "s/record_name=\"\"/record_name=\"$RECORD_NAME\"/g" "$SCRIPT" && \
     sed -i "s/sitename=\"\"/sitename=\"$SITENAME\"/g" "$SCRIPT"
 
-RUN crontab -l > mycron && \
-    echo "*/$INTERVAL_MIN * * * * /bin/bash /cloudflare-ddns-updater/cloudflare-template.sh" >> mycron && \
-    crontab mycron && \
-    rm mycron
+RUN crontab -l > mycron
+RUN echo "*/$INTERVAL_MIN * * * * /bin/bash /cloudflare-ddns-updater/cloudflare-template.sh" >> mycron
+RUN crontab mycron
+RUN rm mycron
