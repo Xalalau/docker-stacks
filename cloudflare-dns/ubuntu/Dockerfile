@@ -1,4 +1,4 @@
-FROM ubuntu:22:04
+FROM ubuntu:22.04
 
 LABEL maintainer="xalalau@outlook.com"
 LABEL version="0.1"
