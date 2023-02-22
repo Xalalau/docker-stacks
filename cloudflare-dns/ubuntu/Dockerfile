@@ -1,8 +1,16 @@
-FROM ubuntu:latest
+FROM ubuntu:22:04
 
-RUN apt update && apt upgrade && \
-    apt install git sed cron && \
-    systemctl enable cron
+LABEL maintainer="xalalau@outlook.com"
+LABEL version="0.1"
+LABEL description="Keep DNS A record updated"
+
+# Disable Prompt During Packages Installation
+ARG DEBIAN_FRONTEND=noninteractive
+
+RUN apt update
+RUN apt upgrade -y
+RUN apt install git sed cron -y
+RUN systemctl enable cron
 
 WORKDIR /cloudflare-ddns-updater
 
