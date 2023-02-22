@@ -1,0 +1,26 @@
+version: '3.8'
+
+# Environment:
+#   EMAIL
+#   AUTH_KEY
+#   ZONE_ID
+#   RECORD_NAME
+#   SITENAME
+#   INTERVAL_MIN
+
+services:
+
+    # Ubuntu + script
+    cf-ubuntu-dns:
+        build:
+            context: .
+            dockerfile: ./ubuntu/Dockerfile
+        container_name: cf-ubuntu-dns
+        restart: unless-stopped
+        environment:
+            EMAIL: ${EMAIL}
+            AUTH_KEY: ${AUTH_KEY}
+            ZONE_ID: ${ZONE_ID}
+            RECORD_NAME: ${RECORD_NAME}
+            SITENAME: ${SITENAME}
+            INTERVAL_MIN: ${INTERVAL_MIN}
