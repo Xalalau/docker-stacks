@@ -44,7 +44,8 @@ RUN sed -i "s/auth_email=\"\"/auth_email=\"$EMAIL\"/g" "$SCRIPT" && \
 
 # Create crontab
 RUN echo "*/$INTERVAL_MIN * * * * /bin/bash $SCRIPT" > "$CRON_FILE" && \
-    chmod 0644 "$CRON_FILE" && \
+    echo "Cloudflare DNS script installed." > "$CRON_LOG" && \
+    chmod 0644 "$CRON_FILE" "$CRON_LOG" && \
     touch "$CRON_LOG"
 
 # Hook the command
