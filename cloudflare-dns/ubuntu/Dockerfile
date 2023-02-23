@@ -43,7 +43,7 @@ RUN sed -i "s/auth_email=\"\"/auth_email=\"$EMAIL\"/g" "$SCRIPT" && \
     sed -i "s/auth_method=\"token\"/auth_method=\"global\"/g" "$SCRIPT"
 
 # Create crontab
-RUN echo "*/${INTERVAL_MIN} * * * * /bin/bash $SCRIPT" > "$CRON_FILE" && \
+RUN echo "*/$INTERVAL_MIN * * * * /bin/bash $SCRIPT" > "$CRON_FILE" && \
     chmod 0644 "$CRON_FILE" && \
     touch "$CRON_LOG"
 
