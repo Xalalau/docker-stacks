@@ -6,10 +6,13 @@ LABEL version="0.1"
 LABEL description="Keep DNS A record updated"
 
 # ENV
-ENV BASE_DIR /cloudflare-ddns-updater
+ENV BASE_DIR "/cloudflare-ddns-updater"
 ENV SCRIPT="$BASE_DIR/cloudflare-template.sh"
 ENV CRON_FILE="/etc/cron.d/dns"
 ENV CRON_LOG="/var/log/cron.log"
+
+# Dir
+WORKDIR "$BASE_DIR"
 
 # Disable Prompt During Packages Installation
 ARG DEBIAN_FRONTEND=noninteractive
@@ -32,16 +35,15 @@ ARG RECORD_NAME
 ARG SITENAME
 ARG INTERVAL_MIN
 
-WORKDIR "$BASE_DIR"
-
 RUN sed -i "s/auth_email=\"\"/auth_email=\"$EMAIL\"/g" "$SCRIPT" && \
     sed -i "s/auth_key=\"\"/auth_key=\"$AUTH_KEY\"/g" "$SCRIPT" && \
     sed -i "s/zone_identifier=\"\"/zone_identifier=\"$ZONE_ID\"/g" "$SCRIPT" && \
     sed -i "s/record_name=\"\"/record_name=\"$RECORD_NAME\"/g" "$SCRIPT" && \
-    sed -i "s/sitename=\"\"/sitename=\"$SITENAME\"/g" "$SCRIPT"
+    sed -i "s/sitename=\"\"/sitename=\"$SITENAME\"/g" "$SCRIPT" && \
+    sed -i "s/auth_method=\"token\"/auth_method=\"global\"/g" "$SCRIPT"
 
 # Create crontab
-RUN echo "*/$INTERVAL_MIN * * * * /bin/bash /$SCRIPT" > "$CRON_FILE" && \
+RUN echo "*/${INTERVAL_MIN} * * * * /bin/bash $SCRIPT" > "$CRON_FILE" && \
     chmod 0644 "$CRON_FILE" && \
     touch "$CRON_LOG"
 
