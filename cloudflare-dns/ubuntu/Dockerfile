@@ -2,7 +2,7 @@ FROM ubuntu:latest
 
 # Container info
 LABEL maintainer="xalalau@outlook.com"
-LABEL version="1.3"
+LABEL version="2"
 LABEL description="Cloudflare DDNS updater"
 
 # ENV
@@ -41,22 +41,34 @@ RUN sed -i 's/#!\/bin\/bash//g' "$SCRIPT" && \
 # Add executable permission
 RUN chmod +x "$SCRIPT"
 
-# Set script configs
-ARG EMAIL
+# Script settings
+ARG AUTH_EMAIL
+ARG AUTH_METHOD
 ARG AUTH_KEY
-ARG ZONE_ID
+ARG ZONE_IDENTIFIER
 ARG RECORD_NAME
+ARG TTL
+ARG PROXY
 ARG SITENAME
-ARG INTERVAL_MIN
+ARG SLACKCHANNEL
+ARG SLACKURI
+ARG DISCORDURI
 
-RUN sed -i "s/auth_email=\"\"/auth_email=\"$EMAIL\"/g" "$SCRIPT" && \
+RUN sed -i "s/auth_email=\"\"/auth_email=\"$AUTH_EMAIL\"/g" "$SCRIPT" && \
+    sed -i "s/auth_method=\"token\"/auth_method=\"$AUTH_METHOD\"/g" "$SCRIPT" && \
     sed -i "s/auth_key=\"\"/auth_key=\"$AUTH_KEY\"/g" "$SCRIPT" && \
-    sed -i "s/zone_identifier=\"\"/zone_identifier=\"$ZONE_ID\"/g" "$SCRIPT" && \
+    sed -i "s/zone_identifier=\"\"/zone_identifier=\"$ZONE_IDENTIFIER\"/g" "$SCRIPT" && \
     sed -i "s/record_name=\"\"/record_name=\"$RECORD_NAME\"/g" "$SCRIPT" && \
+    sed -i "s/ttl=\"3600\"/ttl=\"$TTL\"/g" "$SCRIPT" && \
+    sed -i "s/proxy=\"false\"/proxy=\"$PROXY\"/g" "$SCRIPT" && \
     sed -i "s/sitename=\"\"/sitename=\"$SITENAME\"/g" "$SCRIPT" && \
-    sed -i "s/auth_method=\"token\"/auth_method=\"global\"/g" "$SCRIPT"
+    sed -i "s/slackchannel=\"\"/slackchannel=\"$SLACKCHANNEL\"/g" "$SCRIPT" && \
+    sed -i "s/slackuri=\"\"/slackuri=\"$SLACKURI\"/g" "$SCRIPT" && \
+    sed -i "s/discorduri=\"\"/discorduri=\"$DISCORDURI\"/g" "$SCRIPT"
 
 # Create crontab
+ARG INTERVAL_MIN
+
 RUN touch "$CRON_FILE" && \
     chmod 600 "$CRON_FILE" && \
     echo "*/$INTERVAL_MIN * * * * /bin/bash $SCRIPT" >> "$CRON_FILE" && \

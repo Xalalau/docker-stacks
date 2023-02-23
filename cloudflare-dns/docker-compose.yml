@@ -1,12 +1,19 @@
 version: '3.8'
 
 # Environment:
-#   EMAIL
+# https://github.com/K0p1-Git/cloudflare-ddns-updater/blob/main/cloudflare-template.sh#L4
+#   AUTH_EMAIL
+#   AUTH_METHOD
 #   AUTH_KEY
-#   ZONE_ID
+#   ZONE_IDENTIFIER
 #   RECORD_NAME
+#   TTL
+#   PROXY
 #   SITENAME
-#   INTERVAL_MIN
+#   SLACKCHANNEL
+#   SLACKURI
+#   DISCORDURI
+#   INTERVAL_MIN -- Minutes until the script checks the dns again
 
 networks:
     cloudflare-dns:
@@ -19,11 +26,17 @@ services:
             context: .
             dockerfile: ./ubuntu/Dockerfile
             args:
-                EMAIL: ${EMAIL}
+                AUTH_EMAIL: ${AUTH_EMAIL}
+                AUTH_METHOD: ${AUTH_METHOD}
                 AUTH_KEY: ${AUTH_KEY}
-                ZONE_ID: ${ZONE_ID}
+                ZONE_IDENTIFIER: ${ZONE_IDENTIFIER}
                 RECORD_NAME: ${RECORD_NAME}
+                TTL: ${TTL}
+                PROXY: ${PROXY}
                 SITENAME: ${SITENAME}
+                SLACKCHANNEL: ${SLACKCHANNEL}
+                SLACKURI: ${SLACKURI}
+                DISCORDURI: ${DISCORDURI}
                 INTERVAL_MIN: ${INTERVAL_MIN}
         container_name: cf-ubuntu-dns
         restart: unless-stopped
