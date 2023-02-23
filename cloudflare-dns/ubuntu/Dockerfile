@@ -9,7 +9,7 @@ LABEL description="Keep DNS A record updated"
 ENV BASE_DIR "/cloudflare-ddns-updater"
 ENV SCRIPT="$BASE_DIR/cloudflare-template.sh"
 ENV CRON_FILE="/etc/cron.d/dns"
-ENV CRON_LOG="/var/log/cron.log"
+ENV SYS_LOG="/var/log/syslog"
 
 # Dir
 WORKDIR "$BASE_DIR"
@@ -47,9 +47,8 @@ RUN sed -i "s/auth_email=\"\"/auth_email=\"$EMAIL\"/g" "$SCRIPT" && \
 
 # Create crontab
 RUN echo "*/$INTERVAL_MIN * * * * /bin/bash $SCRIPT" > "$CRON_FILE" && \
-    echo "Cloudflare DNS script installed." > "$CRON_LOG" && \
-    chmod 0644 "$CRON_FILE" "$CRON_LOG" && \
-    touch "$CRON_LOG"
+    chmod 0644 "$CRON_FILE" && \
+    logger "Cloudflare DNS script installed."
 
 # Hook the command
-CMD cron && tail -f "$CRON_LOG"
+CMD cron && tail -f "$SYS_LOG"
