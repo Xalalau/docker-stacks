@@ -30,7 +30,7 @@ RUN git clone https://github.com/K0p1-Git/cloudflare-ddns-updater.git "$BASE_DIR
 
 # Redirect script logs
 RUN sed -i 's/#!\/bin\/bash//g' "$SCRIPT" && \
-    sed -i echo "$FAKE_LOGGER" | cat - "$SCRIPT" > temp && mv temp "$SCRIPT" && \
+    echo "$FAKE_LOGGER" | cat - "$SCRIPT" > temp && mv temp "$SCRIPT" && \
     sed -i "s/logger -s/logger/g" "$SCRIPT"
 
 # Set script configs
