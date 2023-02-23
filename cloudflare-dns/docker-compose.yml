@@ -13,19 +13,19 @@ networks:
 
 services:
 
-    # Ubuntu + script
+    # Ubuntu + cloudflare dns script
     cf-ubuntu-dns:
         build:
             context: .
             dockerfile: ./ubuntu/Dockerfile
+            args:
+                EMAIL: ${EMAIL}
+                AUTH_KEY: ${AUTH_KEY}
+                ZONE_ID: ${ZONE_ID}
+                RECORD_NAME: ${RECORD_NAME}
+                SITENAME: ${SITENAME}
+                INTERVAL_MIN: ${INTERVAL_MIN}
         container_name: cf-ubuntu-dns
         restart: unless-stopped
-        environment:
-            EMAIL: ${EMAIL}
-            AUTH_KEY: ${AUTH_KEY}
-            ZONE_ID: ${ZONE_ID}
-            RECORD_NAME: ${RECORD_NAME}
-            SITENAME: ${SITENAME}
-            INTERVAL_MIN: ${INTERVAL_MIN}
         networks:
             - cloudflare-dns
