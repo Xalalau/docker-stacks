@@ -20,9 +20,12 @@ ARG DEBIAN_FRONTEND=noninteractive
 # APT
 RUN apt update && \
     apt upgrade -y && \
-    apt install -y git sed cron nano && \
+    apt install -y git sed cron nano rsyslog && \
     rm -rf /var/lib/apt/lists/* && \
     apt clean
+
+# rsyslog
+RUN service rsyslog start
 
 # Download script
 RUN git clone https://github.com/K0p1-Git/cloudflare-ddns-updater.git "$BASE_DIR"
