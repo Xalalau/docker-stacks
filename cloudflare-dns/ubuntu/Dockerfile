@@ -1,22 +1,30 @@
-FROM ubuntu:22.04
+FROM ubuntu:latest
 
+# Container info
 LABEL maintainer="xalalau@outlook.com"
 LABEL version="0.1"
 LABEL description="Keep DNS A record updated"
 
+# ENV
+ENV BASE_DIR /cloudflare-ddns-updater
+ENV SCRIPT="$BASE_DIR/cloudflare-template.sh"
+ENV CRON_FILE="/etc/cron.d/dns"
+ENV CRON_LOG="/var/log/cron.log"
+
 # Disable Prompt During Packages Installation
 ARG DEBIAN_FRONTEND=noninteractive
 
+# APT
 RUN apt update && \
     apt upgrade -y && \
-    apt install -y git sed cron
+    apt install -y git sed cron nano && \
+    rm -rf /var/lib/apt/lists/* && \
+    apt clean
 
-ENV BASE_DIR /cloudflare-ddns-updater
-
+# Download script
 RUN git clone https://github.com/K0p1-Git/cloudflare-ddns-updater.git "$BASE_DIR"
 
-WORKDIR "$BASE_DIR"
-
+# Set script configs
 ARG EMAIL
 ARG AUTH_KEY
 ARG ZONE_ID
@@ -24,7 +32,7 @@ ARG RECORD_NAME
 ARG SITENAME
 ARG INTERVAL_MIN
 
-ENV SCRIPT="cloudflare-template.sh"
+WORKDIR "$BASE_DIR"
 
 RUN sed -i "s/auth_email=\"\"/auth_email=\"$EMAIL\"/g" "$SCRIPT" && \
     sed -i "s/auth_key=\"\"/auth_key=\"$AUTH_KEY\"/g" "$SCRIPT" && \
@@ -32,12 +40,10 @@ RUN sed -i "s/auth_email=\"\"/auth_email=\"$EMAIL\"/g" "$SCRIPT" && \
     sed -i "s/record_name=\"\"/record_name=\"$RECORD_NAME\"/g" "$SCRIPT" && \
     sed -i "s/sitename=\"\"/sitename=\"$SITENAME\"/g" "$SCRIPT"
 
-# crontab
-ENV CRON_FILE="/etc/cron.d/dns"
-ENV CRON_LOG="/var/log/cron.log"
-
-RUN echo "*/$INTERVAL_MIN * * * * /bin/bash /$BASE_DIR/$SCRIPT" > "$CRON_FILE" && \
+# Create crontab
+RUN echo "*/$INTERVAL_MIN * * * * /bin/bash /$SCRIPT" > "$CRON_FILE" && \
     chmod 0644 "$CRON_FILE" && \
     touch "$CRON_LOG"
 
+# Hook the command
 CMD cron && tail -f "$CRON_LOG"
