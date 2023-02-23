@@ -10,10 +10,7 @@ ENV BASE_DIR "/cloudflare-ddns-updater"
 ENV SCRIPT="$BASE_DIR/cloudflare-template.sh"
 ENV CRON_FILE="/etc/cron.d/dns"
 ENV CRON_LOG="/var/log/cron.log"
-ENV FAKE_LOGGER='function logger() { \
-    echo "$1" >> "/var/log/cron.log" \
-} \
-'
+ENV FAKE_LOGGER='#!/bin/bash function logger() { echo "$1" >> "/var/log/cron.log" }'
 
 # Dir
 WORKDIR "$BASE_DIR"
@@ -32,7 +29,8 @@ RUN apt update && \
 RUN git clone https://github.com/K0p1-Git/cloudflare-ddns-updater.git "$BASE_DIR"
 
 # Redirect script logs
-RUN sed -i "$FAKE_LOGGER" "$SCRIPT" && \
+RUN sed -i 's/#!/bin/bash//g' "$SCRIPT" && \
+    sed -i "$FAKE_LOGGER" "$SCRIPT" && \
     sed -i "s/logger -s/logger/g" "$SCRIPT"
 
 # Set script configs
