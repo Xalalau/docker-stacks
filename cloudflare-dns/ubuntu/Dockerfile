@@ -36,8 +36,6 @@ RUN sed -i "s/auth_email=\"\"/auth_email=\"$EMAIL\"/g" "$SCRIPT" && \
 ENV CRON_FILE="/etc/cron.d/dns"
 ENV CRON_LOG="/var/log/cron.log"
 
-ADD crontab /etc/cron.d/dns
-
 RUN echo "*/$INTERVAL_MIN * * * * /bin/bash /$BASE_DIR/$SCRIPT" > "$CRON_FILE" && \
     chmod 0644 "$CRON_FILE" && \
     touch "$CRON_LOG"
