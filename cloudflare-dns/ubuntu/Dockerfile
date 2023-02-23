@@ -24,9 +24,6 @@ RUN apt update && \
     rm -rf /var/lib/apt/lists/* && \
     apt clean
 
-# rsyslog
-RUN service rsyslog start
-
 # Download script
 RUN git clone https://github.com/K0p1-Git/cloudflare-ddns-updater.git "$BASE_DIR"
 
