@@ -2,15 +2,14 @@ FROM ubuntu:latest
 
 # Container info
 LABEL maintainer="xalalau@outlook.com"
-LABEL version="0.1"
-LABEL description="Keep DNS A record updated"
+LABEL version="1"
+LABEL description="Cloudflare DDNS updater"
 
-# ENV + logger
+# ENV
 ENV BASE_DIR "/cloudflare-ddns-updater"
 ENV SCRIPT="$BASE_DIR/cloudflare-template.sh"
 ENV CRON_FILE="/etc/cron.d/dns"
 ENV CRON_LOG="/var/log/cron.log"
-ENV FAKE_LOGGER='function logger() { echo "$1" >> "/var/log/cron.log" }'
 
 # Dir
 WORKDIR "$BASE_DIR"
@@ -21,7 +20,7 @@ ARG DEBIAN_FRONTEND=noninteractive
 # APT
 RUN apt update && \
     apt upgrade -y && \
-    apt install -y git sed cron nano && \
+    apt install -y git sed cron nano curl && \
     rm -rf /var/lib/apt/lists/* && \
     apt clean
 
@@ -30,9 +29,17 @@ RUN git clone https://github.com/K0p1-Git/cloudflare-ddns-updater.git "$BASE_DIR
 
 # Redirect script logs and add executable permission
 RUN sed -i 's/#!\/bin\/bash//g' "$SCRIPT" && \
-    echo '#!/bin/bash' > temp && echo "$FAKE_LOGGER" | cat - "$SCRIPT" >> temp && mv temp "$SCRIPT" && \
-    sed -i "s/logger -s/logger/g" "$SCRIPT" && \
-    chmod +x "$SCRIPT"
+    echo '#!/bin/bash' > temp && \
+    echo 'function logger() {' >> temp && \
+    echo "    local out='$CRON_LOG'" >> temp && \
+    echo '    echo "$1" >> "$out"' >> temp && \
+    echo '}' >> temp && \
+    cat "$SCRIPT" >> temp && \
+    mv temp "$SCRIPT" && \
+    sed -i "s/logger -s/logger/g" "$SCRIPT"
+
+# Add executable permission
+RUN chmod +x "$SCRIPT"
 
 # Set script configs
 ARG EMAIL
