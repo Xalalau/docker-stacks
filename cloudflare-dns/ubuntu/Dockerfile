@@ -10,9 +10,9 @@ ENV BASE_DIR "/cloudflare-ddns-updater"
 ENV SCRIPT="$BASE_DIR/cloudflare-template.sh"
 ENV CRON_FILE="/etc/cron.d/dns"
 ENV CRON_LOG="/var/log/cron.log"
-ENV FAKE_LOGGER='function logger() {
-    echo "$1" >> "/var/log/cron.log"
-}
+ENV FAKE_LOGGER='function logger() { \
+    echo "$1" >> "/var/log/cron.log" \
+} \
 '
 
 # Dir
