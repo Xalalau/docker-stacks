@@ -27,7 +27,7 @@ RUN apt update && \
 # Download script
 RUN git clone https://github.com/K0p1-Git/cloudflare-ddns-updater.git "$BASE_DIR"
 
-# Redirect script logs and add executable permission
+# Redirect logs
 RUN sed -i 's/#!\/bin\/bash//g' "$SCRIPT" && \
     echo '#!/bin/bash' > temp && \
     echo 'function logger() {' >> temp && \
