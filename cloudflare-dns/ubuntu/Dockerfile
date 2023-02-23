@@ -49,10 +49,10 @@ RUN sed -i "s/auth_email=\"\"/auth_email=\"$EMAIL\"/g" "$SCRIPT" && \
     sed -i "s/auth_method=\"token\"/auth_method=\"global\"/g" "$SCRIPT"
 
 # Create crontab
-RUN echo "*/$INTERVAL_MIN * * * * /bin/bash $SCRIPT" > "$CRON_FILE"
-RUN touch "$CRON_LOG"
-RUN chmod 644 "$CRON_FILE" "$CRON_LOG"
-RUN echo "Cloudflare DNS script installed." > "$CRON_LOG"
+RUN echo "*/$INTERVAL_MIN * * * * /bin/bash $SCRIPT" > "$CRON_FILE" && \
+    touch "$CRON_LOG" && \
+    chmod 644 "$CRON_FILE" "$CRON_LOG" && \
+    echo "Cloudflare DNS script installed." > "$CRON_LOG"
 
 # Hook the command
 CMD cron && tail -f "$CRON_LOG"
