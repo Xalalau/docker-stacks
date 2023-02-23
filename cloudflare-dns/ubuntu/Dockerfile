@@ -29,9 +29,9 @@ RUN apt update && \
 RUN git clone https://github.com/K0p1-Git/cloudflare-ddns-updater.git "$BASE_DIR"
 
 # Redirect script logs
-RUN sed -i 's/#!\/bin\/bash//g' "$SCRIPT"
-RUN sed -i echo "$FAKE_LOGGER" | cat - "$SCRIPT" > temp && mv temp "$SCRIPT"
-RUN sed -i "s/logger -s/logger/g" "$SCRIPT"
+RUN sed -i 's/#!\/bin\/bash//g' "$SCRIPT" && \
+    sed -i echo "$FAKE_LOGGER" | cat - "$SCRIPT" > temp && mv temp "$SCRIPT" && \
+    sed -i "s/logger -s/logger/g" "$SCRIPT"
 
 # Set script configs
 ARG EMAIL
@@ -49,9 +49,9 @@ RUN sed -i "s/auth_email=\"\"/auth_email=\"$EMAIL\"/g" "$SCRIPT" && \
     sed -i "s/auth_method=\"token\"/auth_method=\"global\"/g" "$SCRIPT"
 
 # Create crontab
-RUN echo "*/$INTERVAL_MIN * * * * /bin/bash $SCRIPT" > "$CRON_FILE" && \
-    chmod 0644 "$CRON_FILE" "$CRON_LOG" && \
-    echo "Cloudflare DNS script installed." > "$CRON_LOG"
+RUN echo "*/$INTERVAL_MIN * * * * /bin/bash $SCRIPT" > "$CRON_FILE"
+RUN chmod 0644 "$CRON_FILE" "$CRON_LOG"
+RUN echo "Cloudflare DNS script installed." > "$CRON_LOG"
 
 # Hook the command
 CMD cron && tail -f "$CRON_LOG"
