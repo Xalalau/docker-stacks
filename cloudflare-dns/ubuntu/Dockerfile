@@ -2,7 +2,7 @@ FROM ubuntu:latest
 
 # Container info
 LABEL maintainer="xalalau@outlook.com"
-LABEL version="1.2"
+LABEL version="1.3"
 LABEL description="Cloudflare DDNS updater"
 
 # ENV
@@ -57,10 +57,12 @@ RUN sed -i "s/auth_email=\"\"/auth_email=\"$EMAIL\"/g" "$SCRIPT" && \
     sed -i "s/auth_method=\"token\"/auth_method=\"global\"/g" "$SCRIPT"
 
 # Create crontab
-RUN echo "*/$INTERVAL_MIN * * * * /bin/bash $SCRIPT" >> "$CRON_FILE" && \
-    touch "$CRON_LOG" && \
+RUN echo "*/$INTERVAL_MIN * * * * /bin/bash $SCRIPT" > "$CRON_FILE" && \
+    chmod 600 "$CRON_FILE" && \
+    touch "$CRON_FILE" && \
     chmod 644 "$CRON_LOG" && \
-    echo "Cloudflare DNS script installed." > "$CRON_LOG"
+    touch "$CRON_LOG" && \
+    echo "Cloudflare DNS script installed." >> "$CRON_LOG"
 
 # Hook the command
 CMD cron && tail -f "$CRON_LOG"
