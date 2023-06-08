@@ -1,3 +1,3 @@
-FROM nginx:1.22
+FROM nginx:alpine-slim
 
 COPY ./nginx/default.conf /etc/nginx/conf.d/default.conf 
