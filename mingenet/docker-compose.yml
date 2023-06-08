@@ -27,7 +27,7 @@ services:
         depends_on:
             - minge-php
             - minge-mariadb
-            - minge-redis
+#            - minge-redis
         networks:
             - mingenet
 
