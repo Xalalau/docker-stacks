@@ -50,7 +50,7 @@ services:
 
     # mariadb
     minge-mariadb:
-        image: mariadb:10.8
+        image: mariadb:latest
         container_name: minge-mariadb
         ports:
             - "3307:3306"
