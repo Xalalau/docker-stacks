@@ -1,10 +1,10 @@
 # Base on the mediawiki image
-FROM mediawiki:1.39.1
+FROM mediawiki:1.39.4
 
 # environment settings
 ENV MEDIAWIKI_VERSION_MAJOR=1
 ENV MEDIAWIKI_VERSION_MINOR=39
-ENV MEDIAWIKI_VERSION_BUGFIX=1
+ENV MEDIAWIKI_VERSION_BUGFIX=4
 ENV MEDIAWIKI_VERSION=v$MEDIAWIKI_VERSION_MAJOR\_$MEDIAWIKI_VERSION_MINOR\_$MEDIAWIKI_VERSION_BUGFIX
 ENV MEDIAWIKI_BRANCH=REL$MEDIAWIKI_VERSION_MAJOR\_$MEDIAWIKI_VERSION_MINOR
 ENV MEDIAWIKI_STORAGE_PATH=/var/www/html
@@ -26,7 +26,7 @@ RUN set -eux; \
 # HACK!! Fix MultimediaViewer webp preview (while it's not updated)
 # https://github.com/wikimedia/mediawiki-extensions-MultimediaViewer/commit/00ae50ea496438d7fe3b1ec8c68b1108100d07ed
 # Remove this command later!
-RUN sed -i "s/\"tif\": \"default\"/\"tif\": \"default\", \"webp\": \"default\"/g" "$MEDIAWIKI_STORAGE_PATH/extensions/MultimediaViewer/extension.json"
+# RUN sed -i "s/\"tif\": \"default\"/\"tif\": \"default\", \"webp\": \"default\"/g" "$MEDIAWIKI_STORAGE_PATH/extensions/MultimediaViewer/extension.json"
 
 # copy configs
 COPY ./mediawiki/LocalSettings.php "$MEDIAWIKI_STORAGE_PATH"
