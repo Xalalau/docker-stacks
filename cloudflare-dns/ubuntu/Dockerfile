@@ -59,7 +59,7 @@ RUN sed -i "s/auth_email=\"\"/auth_email=\"$AUTH_EMAIL\"/g" "$SCRIPT" && \
     sed -i "s/auth_key=\"\"/auth_key=\"$AUTH_KEY\"/g" "$SCRIPT" && \
     sed -i "s/zone_identifier=\"\"/zone_identifier=\"$ZONE_IDENTIFIER\"/g" "$SCRIPT" && \
     sed -i "s/record_name=\"\"/record_name=\"$RECORD_NAME\"/g" "$SCRIPT" && \
-    sed -i "s/ttl=\"3600\"/ttl=\"$TTL\"/g" "$SCRIPT" && \
+    sed -i "s/ttl=3600/ttl=$TTL/g" "$SCRIPT" && \
     sed -i "s/proxy=\"false\"/proxy=\"$PROXY\"/g" "$SCRIPT" && \
     sed -i "s/sitename=\"\"/sitename=\"$SITENAME\"/g" "$SCRIPT" && \
     sed -i "s/slackchannel=\"\"/slackchannel=\"$SLACKCHANNEL\"/g" "$SCRIPT" && \
